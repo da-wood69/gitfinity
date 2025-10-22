@@ -115,6 +115,9 @@ python3 daily_commit.py
 
 # Run without pushing (commits only)
 python3 daily_commit.py --no-push
+
+# Test mode: always create 2 commits (useful for testing)
+python3 daily_commit.py --test --no-push
 ```
 
 ## Customization

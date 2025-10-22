@@ -108,12 +108,16 @@ class DailyCommitter:
             print("Failed to push to GitHub")
             return False
 
-    def run(self, auto_push=True):
+    def run(self, auto_push=True, test_mode=False):
         """Main execution: create 0-2 random commits and optionally push."""
         # Random number of commits using S-curve distribution
-        num_commits = self.get_s_curve_commits()
+        if test_mode:
+            num_commits = 2  # Always create 2 commits in test mode
+            print(f"=== Daily GitHub Activity (TEST MODE) ===")
+        else:
+            num_commits = self.get_s_curve_commits()
+            print(f"=== Daily GitHub Activity ===")
 
-        print(f"=== Daily GitHub Activity ===")
         print(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
         print(f"Commits to create: {num_commits}")
         print("=" * 30)
@@ -145,7 +149,12 @@ if __name__ == "__main__":
         action="store_true",
         help="Don't push commits to remote (useful for CI/CD)"
     )
+    parser.add_argument(
+        "--test",
+        action="store_true",
+        help="Test mode: always create 2 commits instead of random (0-2)"
+    )
     args = parser.parse_args()
 
     committer = DailyCommitter()
-    committer.run(auto_push=not args.no_push)
+    committer.run(auto_push=not args.no_push, test_mode=args.test)
