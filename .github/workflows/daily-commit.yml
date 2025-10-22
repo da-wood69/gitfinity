@@ -48,9 +48,10 @@ jobs:
 
       - name: Push changes (if any commits were made)
         run: |
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "No changes to push"
+          if [ -z "$(git log origin/main..HEAD)" ]; then
+            echo "No commits to push"
           else
+            echo "Pushing commits to remote..."
             git push
           fi
         env:
